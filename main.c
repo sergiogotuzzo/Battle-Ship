@@ -79,8 +79,6 @@ int main() {
 
     for (int i = 0; i < 4; i++) {
         table[longShip + (longShipIsVertical ? i * 10 : i)] = 'L';
-
-        printf("L: %d\n", longShip + i);
     }
 
     int mediumShipIsVertical = rand() % 2 == 1 ? true : false;
@@ -88,8 +86,6 @@ int main() {
 
     for (int i = 0; i < 3; i++) {
         table[mediumShip + (mediumShipIsVertical ? i * 10 : i)] = 'M';
-
-        printf("M: %d\n", mediumShip + i);
     }
 
     int shortShipIsVertical = rand() % 2 == 1 ? true : false;
@@ -97,11 +93,9 @@ int main() {
 
     for (int i = 0; i < 2; i++) {
         table[shortShip + (shortShipIsVertical ? i * 10 : i)] = 'S';
-
-        printf("S: %d\n", shortShip + i);
     }
 
-    printTable(table);
+    printTable(knownTable);
 
     int attempts = 0;
 
@@ -113,10 +107,6 @@ int main() {
         scanf("%c %d", &x, &y);
 
         int cell = getCell(x, y) - 1;
-
-        // printf("%d\n", cell);
-        // printf("%c\n", table[cell - 1]);
-
         int longShipPartsFound = 0, mediumShipPartsFound = 0, shortShipPartsFound = 0;
 
         if (table[cell] == '*') {
@@ -137,38 +127,13 @@ int main() {
             knownTable[cell] = table[cell];
         }
 
+        attempts++;
+
         printTable(knownTable);
 
         if (longShipPartsFound == 4 && mediumShipPartsFound == 3 && shortShipPartsFound == 2) {
+            printf("You won in %d attemps!", attempts);
             break;
         }
-
-        attempts++;
     }
 }
-
-/**
- *   1 2 3 4 5 6 7 8 9 10
- * A * * * * * * * * * *
- * B * * * * * * * * * * 
- * C * * * * * * * * * *
- * D * * * * * * * * * *
- * E * * * * * * * * * *
- * F * * * * * * * * * *
- * G * * * * * * * * * *
- * H * * * * * * * * * *
- * I * * * * * * * * * *
- * J * * * * * * * * * *
- */
-
-//per buttare giù la nave lunga devi colpire tutti i 4 punti.
-//per buttare giù la nave media devi colpire tutti i 3 punti.
-//per buttare giù la nave corta devi colpire tutti i 2 punti.
-
-// table[100] = {1...100}
-
-// LUNGA = L
-// MEDIA = M
-// CORTA = C
-
-// printTable(bool mostraNavi, int lunga[], int )
