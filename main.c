@@ -33,48 +33,30 @@ void printTable(char table[100]) {
     }
 }
 
-bool isShipOverlaid(int indexShip, int indexShipLength, int ship, bool shipIsVertical) {
-    if (shipIsVertical) {
-        for (int i = 0; i < indexShipLength; i++) {
-            if (indexShip + i * 10 == ship) {
+bool isShipOverlaid(int ship, int shipLength, bool isShipVertical, int subShip, int subShipLenght, bool isSubShipVertical) {
+    for (int i = 0; i < shipLength; i++) {
+        for (int j = 0; j < subShipLenght; j++) {
+            if ((ship + (isShipVertical ? i * 10 : i)) == (subShip + (isSubShipVertical ? j * 10 : j))) {
                 return true;
             }
         }
-    } else return indexShip + indexShipLength == ship;
+    }
+
+    return false;
 }
 
 bool isShipOverflow(int ship, int shipLength, bool shipIsVertical) {
     return shipIsVertical ? ship + (shipLength - 1) * 10 > 100 : ship % 10 > (10 - shipLength);
 }
 
-int generateLongShip(bool longShipIsVertical) {
-    int longShip = rand() % 100;
+int generateShip(int shipLength, bool isShipVertical, int subShip, int subShipLength, bool isSubShipVertical) {
+    int ship = rand() % 100;
 
     do {
-        longShip = rand() % 100;
-    } while (isShipOverflow(longShip, 4, longShipIsVertical));
+        ship = rand() % 100;
+    } while (isShipOverflow(ship, shipLength, isShipVertical) || isShipOverlaid(ship, shipLength, isShipVertical, subShip, subShipLength, isSubShipVertical));
 
-    return longShip;
-}
-
-int generateMediumShip(bool mediumShipIsVertical, int longShip, bool longShipIsVertical) {
-    int mediumShip = rand() % 100;
-
-    do {
-        mediumShip = rand() % 100;
-    } while (isShipOverflow(mediumShip, 3, mediumShipIsVertical) || isShipOverlaid(mediumShip, 3, longShip, longShipIsVertical));
-
-    return mediumShip;
-}
-
-int generateShortShip(bool shortShipIsVertical, int mediumShip, bool mediumShipIsVertical) {
-    int shortShip = rand() % 100;
-
-    do {
-        shortShip = rand() % 100;
-    } while (isShipOverflow(shortShip, 2, shortShipIsVertical) || isShipOverlaid(shortShip, 2, mediumShip, mediumShipIsVertical));
-
-    return shortShip;
+    return ship;
 }
 
 int main() {
@@ -93,17 +75,16 @@ int main() {
     srand((unsigned) time(NULL));
 
     int longShipIsVertical = rand() % 2 == 1 ? true : false;
-    int longShip = generateLongShip(longShipIsVertical);
+    int longShip = generateShip(4, longShipIsVertical, 0, 0, false);
 
     for (int i = 0; i < 4; i++) {
-
         table[longShip + (longShipIsVertical ? i * 10 : i)] = 'L';
 
         printf("L: %d\n", longShip + i);
     }
 
     int mediumShipIsVertical = rand() % 2 == 1 ? true : false;
-    int mediumShip = generateMediumShip(mediumShipIsVertical, longShip, longShipIsVertical);
+    int mediumShip = generateShip(3, mediumShipIsVertical, longShip, 4, longShipIsVertical);
 
     for (int i = 0; i < 3; i++) {
         table[mediumShip + (mediumShipIsVertical ? i * 10 : i)] = 'M';
@@ -112,7 +93,7 @@ int main() {
     }
 
     int shortShipIsVertical = rand() % 2 == 1 ? true : false;
-    int shortShip = generateShortShip(shortShipIsVertical, mediumShip, mediumShipIsVertical);
+    int shortShip = generateShip(2, shortShipIsVertical, mediumShip, 3, mediumShipIsVertical);
 
     for (int i = 0; i < 2; i++) {
         table[shortShip + (shortShipIsVertical ? i * 10 : i)] = 'S';
