@@ -33,6 +33,36 @@ void printTable(char table[100]) {
     }
 }
 
+int generateLongShip() {
+    int longShip = rand() % 100;
+
+    do {
+        longShip = rand() % 100;
+    } while (longShip % 10 > 6);
+
+    return longShip;
+}
+
+int generateMediumShip(int longShip) {
+    int mediumShip = rand() % 100;
+
+    do {
+        mediumShip = rand() % 100;
+    } while (mediumShip % 10 > 7 || longShip + 3 == mediumShip);
+
+    return mediumShip;
+}
+
+int generateShortShip(int mediumShip) {
+    int shortShip = rand() % 100;
+
+    do {
+        shortShip = rand() % 100;
+    } while (shortShip % 10 > 8 || mediumShip + 2 == shortShip);
+
+    return shortShip;
+}
+
 int main() {
     char table[100];
 
@@ -48,55 +78,31 @@ int main() {
 
     srand((unsigned) time(NULL));
 
-    int longShip = rand() % 100;
-
-    do {
-        longShip = rand() % 100;
-    } while (longShip % 10 > 7);
-
-    // printf("Long ship: ");
+    int longShip = generateLongShip();
 
     for (int i = 0; i < 4; i++) {
         table[longShip + i] = 'L';
 
-        // printf("%d ", longShip + i);
+        printf("L: %d\n", longShip + i);
     }
 
-    // printf("\n");
-
-    int mediumShip = rand() % 100;
-
-    do {
-        mediumShip = rand() % 100;
-    } while (mediumShip % 10 > 8);
-
-    // printf("Medium ship: ");
+    int mediumShip = generateMediumShip(longShip);
 
     for (int i = 0; i < 3; i++) {
         table[mediumShip + i] = 'M';
 
-        // printf("%d ", mediumShip + i);
+        printf("M: %d\n", mediumShip + i);
     }
 
-    // printf("\n");
+    int shortShip = generateShortShip(mediumShip);
 
-    int shortShip = rand() % 100;
-
-    do {
-        shortShip = rand() % 100;
-    } while (shortShip % 10 > 9);
-
-    // printf("Short ship: ");
-
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < 2; i++) {
         table[shortShip + i] = 'S';
 
-        // printf("%d ", shortShip + i);
+        printf("S: %d\n", shortShip + i);
     }
 
-    // printf("\n");
-
-    printTable(knownTable);
+    printTable(table);
 
     int attempts = 0;
 
