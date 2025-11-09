@@ -3,10 +3,11 @@
 #include <time.h>
 #include <stdlib.h>
 
-int getCell(char x, int y) {
-    int iX = (x - 64) * 10 - 10;
+int getCell(int x, char y) {
+    int A = 'A';
+    int y1100 = (y - A + 1) * 10 - 10;
 
-    return iX + y;
+    return y1100 + x - 1;
 }
 
 void printTable(char table[100]) {
@@ -100,13 +101,14 @@ int main() {
     int attempts = 0;
 
     while (attempts < 40) {
-        char x;
-        int y;
+        int x;
+        char y;
 
-        printf("Enter Y (A-J) and X (1-10)\n");
-        scanf("%c %d", &x, &y);
+        printf("Enter X (1-10) and Y (A-J)\n");
+        scanf("%d %c", &x, &y);
 
-        int cell = getCell(x, y) - 1;
+        int cell = getCell(x, y);
+
         int longShipPartsFound = 0, mediumShipPartsFound = 0, shortShipPartsFound = 0;
 
         if (table[cell] == '*') {
