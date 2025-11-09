@@ -75,10 +75,12 @@ int main() {
 
     srand((unsigned) time(NULL));
 
+    int totalShips = 3;
     char ships[] = {'L', 'M', 'S'};
     int shipLengths[] = {4, 3, 2};
+    int shipPartsFound[] = {0, 0, 0};
 
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < totalShips; i++) {
         char ship = ships[i];
         int shipLength = shipLengths[i];
         bool isShipVertical = rand() % 2 == 1;
@@ -92,7 +94,6 @@ int main() {
     printGame(knownCells);
 
     int attempts = 0;
-    int longShipPartsFound = 0, mediumShipPartsFound = 0, shortShipPartsFound = 0;
 
     while (attempts < 40) {
         int x;
@@ -113,16 +114,12 @@ int main() {
 
             printf("Miss!\n");
         } else {
-            switch (cells[cell]) {
-                case 'L':
-                    longShipPartsFound++;
-                    break;
-                case 'M':
-                    mediumShipPartsFound++;
-                    break;
-                case 'S':
-                    shortShipPartsFound++;
-                    break;
+            for (int i = 0; i < 3; i++) {
+                char ship = ships[i];
+
+                if (cells[cell] == ship) {
+                    shipPartsFound[i]++;
+                }
             }
 
             knownCells[cell] = cells[cell];
@@ -133,10 +130,17 @@ int main() {
         attempts++;
 
         printf("Attempts: %d/40\n", attempts);
-
         printGame(knownCells);
 
-        if (longShipPartsFound == 4 && mediumShipPartsFound == 3 && shortShipPartsFound == 2) {
+        bool allShipPartsSunk = true;
+
+        for (int i = 0; i < totalShips; i++) {
+            if (shipPartsFound[i] < shipLengths[i]) {
+                allShipPartsSunk = false;
+            }
+        }
+
+        if (allShipPartsSunk) {
             printf("You won!\n");
             break;
         } else if (attempts >= 40) {
