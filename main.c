@@ -10,7 +10,7 @@ int getCell(int x, char y) {
     return y1100 + x - 1;
 }
 
-void printTable(char table[100]) {
+void printGame(char cells[100]) {
     printf("  ");
 
     for (int i = 0; i < 10; i++) {
@@ -25,7 +25,7 @@ void printTable(char table[100]) {
         printf("%c ", i + 65);
 
         for (int j = 0; j < 10; j++) {
-            printf("%c ", table[i * 10 + j]);
+            printf("%c ", cells[i * 10 + j]);
 
             if (j == 9) {
                 printf("\n");
@@ -61,16 +61,16 @@ int generateShip(int shipLength, bool isShipVertical, int subShip, int subShipLe
 }
 
 int main() {
-    char table[100];
+    char cells[100];
 
     for (int i = 0; i < 100; i++) {
-        table[i] = '*';
+        cells[i] = '*';
     }
 
-    char knownTable[100];
+    char knownCells[100];
 
     for (int i = 0; i < 100; i++) {
-        knownTable[i] = '*';
+        knownCells[i] = '*';
     }
 
     srand((unsigned) time(NULL));
@@ -79,24 +79,24 @@ int main() {
     int longShip = generateShip(4, longShipIsVertical, 0, 0, false);
 
     for (int i = 0; i < 4; i++) {
-        table[longShip + (longShipIsVertical ? i * 10 : i)] = 'L';
+        cells[longShip + (longShipIsVertical ? i * 10 : i)] = 'L';
     }
 
     int mediumShipIsVertical = rand() % 2 == 1 ? true : false;
     int mediumShip = generateShip(3, mediumShipIsVertical, longShip, 4, longShipIsVertical);
 
     for (int i = 0; i < 3; i++) {
-        table[mediumShip + (mediumShipIsVertical ? i * 10 : i)] = 'M';
+        cells[mediumShip + (mediumShipIsVertical ? i * 10 : i)] = 'M';
     }
 
     int shortShipIsVertical = rand() % 2 == 1 ? true : false;
     int shortShip = generateShip(2, shortShipIsVertical, mediumShip, 3, mediumShipIsVertical);
 
     for (int i = 0; i < 2; i++) {
-        table[shortShip + (shortShipIsVertical ? i * 10 : i)] = 'S';
+        cells[shortShip + (shortShipIsVertical ? i * 10 : i)] = 'S';
     }
 
-    printTable(knownTable);
+    printGame(knownCells);
 
     int attempts = 0;
 
@@ -111,10 +111,10 @@ int main() {
 
         int longShipPartsFound = 0, mediumShipPartsFound = 0, shortShipPartsFound = 0;
 
-        if (table[cell] == '*') {
-            knownTable[cell] = 'O';
+        if (cells[cell] == '*') {
+            knownCells[cell] = 'O';
         } else {
-            switch (table[cell]) {
+            switch (cells[cell]) {
                 case 'L':
                     longShipPartsFound++;
                     break;
@@ -126,12 +126,12 @@ int main() {
                     break;
             }
 
-            knownTable[cell] = table[cell];
+            knownCells[cell] = cells[cell];
         }
 
         attempts++;
 
-        printTable(knownTable);
+        printGame(knownCells);
 
         if (longShipPartsFound == 4 && mediumShipPartsFound == 3 && shortShipPartsFound == 2) {
             printf("You won in %d attemps!", attempts);
