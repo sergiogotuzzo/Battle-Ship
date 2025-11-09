@@ -148,6 +148,7 @@ int main() {
             break;
         } else if (attempts >= 40) {
             printf("You lose!\n");
+            printGame(cells);
             break;
         }
     }
