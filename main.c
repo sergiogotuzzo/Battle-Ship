@@ -99,6 +99,7 @@ int main() {
     printGame(knownCells);
 
     int attempts = 0;
+    int longShipPartsFound = 0, mediumShipPartsFound = 0, shortShipPartsFound = 0;
 
     while (attempts < 40) {
         int x;
@@ -108,8 +109,6 @@ int main() {
         scanf("%d %c", &x, &y);
 
         int cell = getCell(x, y);
-
-        int longShipPartsFound = 0, mediumShipPartsFound = 0, shortShipPartsFound = 0;
 
         if (cells[cell] == '*') {
             knownCells[cell] = 'O';
