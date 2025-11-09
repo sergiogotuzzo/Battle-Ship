@@ -75,25 +75,18 @@ int main() {
 
     srand((unsigned) time(NULL));
 
-    int longShipIsVertical = rand() % 2 == 1;
-    int longShipStart = generateShip('L', 4, longShipIsVertical, cells);
-
-    for (int i = 0; i < 4; i++) {
-        cells[longShipStart + (longShipIsVertical ? i * 10 : i)] = 'L';
-    }
-
-    int mediumShipIsVertical = rand() % 2 == 1;
-    int mediumShipStart = generateShip('M', 3, mediumShipIsVertical, cells);
+    char ships[] = {'L', 'M', 'S'};
+    int shipLengths[] = {4, 3, 2};
 
     for (int i = 0; i < 3; i++) {
-        cells[mediumShipStart + (mediumShipIsVertical ? i * 10 : i)] = 'M';
-    }
+        char ship = ships[i];
+        int shipLength = shipLengths[i];
+        bool isShipVertical = rand() % 2 == 1;
+        int shipStart = generateShip(ship, shipLength, isShipVertical, cells);
 
-    int shortShipIsVertical = rand() % 2 == 1;
-    int shortShipStart = generateShip('S', 2, shortShipIsVertical, cells);
-
-    for (int i = 0; i < 2; i++) {
-        cells[shortShipStart + (shortShipIsVertical ? i * 10 : i)] = 'S';
+        for (int j = 0; j < shipLength; j++) {
+            cells[shipStart + (isShipVertical ? j * 10 : j)] = ship;
+        }
     }
 
     printGame(knownCells);
