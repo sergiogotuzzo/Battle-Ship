@@ -47,7 +47,7 @@ bool isShipOverlaid(int shipStart, int shipLength, bool isShipVertical, int subS
 }
 
 bool isShipOverflow(int shipStart, int shipLength, bool shipIsVertical) {
-    return shipIsVertical ? shipStart + (shipLength - 1) * 10 > 100 : shipStart % 10 > (10 - shipLength);
+    return shipIsVertical ? shipStart / 10 + shipLength > 10 : shipStart % 10 + shipLength > 10;
 }
 
 int generateShip(int shipLength, bool isShipVertical, int subShipStart, int subShipLength, bool isSubShipVertical) {
