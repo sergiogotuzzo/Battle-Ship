@@ -146,7 +146,7 @@ int main() {
         if (longShipPartsFound == 4 && mediumShipPartsFound == 3 && shortShipPartsFound == 2) {
             printf("You won!\n");
             break;
-        } else if (attempts == 40) {
+        } else if (attempts >= 40) {
             printf("You lose!\n");
             break;
         }
