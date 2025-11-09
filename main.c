@@ -114,6 +114,8 @@ int main() {
 
         if (cells[cell] == '*') {
             knownCells[cell] = 'O';
+
+            printf("Miss!\n");
         } else {
             switch (cells[cell]) {
                 case 'L':
@@ -128,17 +130,21 @@ int main() {
             }
 
             knownCells[cell] = cells[cell];
+
+            printf("Hit!\n");
         }
 
         attempts++;
 
+        printf("Attempts: %d/40\n", attempts);
+
         printGame(knownCells);
 
         if (longShipPartsFound == 4 && mediumShipPartsFound == 3 && shortShipPartsFound == 2) {
-            printf("You won in %d attemps!", attempts);
+            printf("You won!\n");
             break;
         } else if (attempts == 40) {
-            printf("You lose!");
+            printf("You lose!\n");
             break;
         }
     }
