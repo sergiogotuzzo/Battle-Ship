@@ -75,21 +75,21 @@ int main() {
 
     srand((unsigned) time(NULL));
 
-    int longShipIsVertical = rand() % 2 == 1 ? true : false;
+    int longShipIsVertical = rand() % 2 == 1;
     int longShipStart = generateShip(4, longShipIsVertical, 0, 0, false);
 
     for (int i = 0; i < 4; i++) {
         cells[longShipStart + (longShipIsVertical ? i * 10 : i)] = 'L';
     }
 
-    int mediumShipIsVertical = rand() % 2 == 1 ? true : false;
+    int mediumShipIsVertical = rand() % 2 == 1;
     int mediumShipStart = generateShip(3, mediumShipIsVertical, longShipStart, 4, longShipIsVertical);
 
     for (int i = 0; i < 3; i++) {
         cells[mediumShipStart + (mediumShipIsVertical ? i * 10 : i)] = 'M';
     }
 
-    int shortShipIsVertical = rand() % 2 == 1 ? true : false;
+    int shortShipIsVertical = rand() % 2 == 1;
     int shortShipStart = generateShip(2, shortShipIsVertical, mediumShipStart, 3, mediumShipIsVertical);
 
     for (int i = 0; i < 2; i++) {
