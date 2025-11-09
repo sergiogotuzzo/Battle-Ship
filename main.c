@@ -34,11 +34,18 @@ void printGame(char cells[100]) {
     }
 }
 
-bool isShipOverlaid(char ship, int shipStart, int shipLength, bool isShipVertical, char cells[100]) {
-    for (int i = 0; i < shipLength; i++) {
-        char cell = cells[shipStart + (isShipVertical ? i * 10 : i)];
+typedef struct {
+    char symbol;
+    int length;
+    bool isVertical;
+    int hits;
+} Ship;
 
-        if (cell != ship && cell != '*') {
+bool isShipOverlaid(int shipStart, Ship ship, char cells[100]) {
+    for (int i = 0; i < ship.length; i++) {
+        char cell = cells[shipStart + (ship.isVertical ? i * 10 : i)];
+
+        if (cell != ship.symbol && cell != '*') {
             return true;
         }
     }
@@ -46,16 +53,16 @@ bool isShipOverlaid(char ship, int shipStart, int shipLength, bool isShipVertica
     return false;
 }
 
-bool isShipOverflow(int shipStart, int shipLength, bool shipIsVertical) {
-    return shipIsVertical ? shipStart / 10 + shipLength > 10 : shipStart % 10 + shipLength > 10;
+bool isShipOverflow(int shipStart, Ship ship) {
+    return ship.isVertical ? shipStart / 10 + ship.length > 10 : shipStart % 10 + ship.length > 10;
 }
 
-int generateShip(char ship, int shipLength, bool isShipVertical, char cells[100]) {
+int generateShip(Ship ship, char cells[100]) {
     int shipStart = rand() % 100;
 
     do {
         shipStart = rand() % 100;
-    } while (isShipOverflow(shipStart, shipLength, isShipVertical) || isShipOverlaid(ship, shipStart, shipLength, isShipVertical, cells));
+    } while (isShipOverflow(shipStart, ship) || isShipOverlaid(shipStart, ship, cells));
 
     return shipStart;
 }
@@ -75,19 +82,18 @@ int main() {
 
     srand((unsigned) time(NULL));
 
-    int totalShips = 3;
-    char ships[] = {'L', 'M', 'S'};
-    int shipLengths[] = {4, 3, 2};
-    int shipPartsFound[] = {0, 0, 0};
+    Ship ships[] = {
+        {'L', 4, rand() % 2 == 1, 0},
+        {'M', 3, rand() % 2 == 1, 0},
+        {'S', 2, rand() % 2 == 1, 0}
+    };
+    int totalShips = sizeof(ships) / sizeof(Ship);
 
     for (int i = 0; i < totalShips; i++) {
-        char ship = ships[i];
-        int shipLength = shipLengths[i];
-        bool isShipVertical = rand() % 2 == 1;
-        int shipStart = generateShip(ship, shipLength, isShipVertical, cells);
+        int shipStart = generateShip(ships[i], cells);
 
-        for (int j = 0; j < shipLength; j++) {
-            cells[shipStart + (isShipVertical ? j * 10 : j)] = ship;
+        for (int j = 0; j < ships[i].length; j++) {
+            cells[shipStart + (ships[i].isVertical ? j * 10 : j)] = ships[i].symbol;
         }
     }
 
@@ -115,10 +121,8 @@ int main() {
             printf("Miss!\n");
         } else {
             for (int i = 0; i < 3; i++) {
-                char ship = ships[i];
-
-                if (cells[cell] == ship) {
-                    shipPartsFound[i]++;
+                if (cells[cell] == ships[i].symbol) {
+                    ships[i].hits++;
                 }
             }
 
@@ -135,7 +139,7 @@ int main() {
         bool allShipPartsSunk = true;
 
         for (int i = 0; i < totalShips; i++) {
-            if (shipPartsFound[i] < shipLengths[i]) {
+            if (ships[i].hits < ships[i].length) {
                 allShipPartsSunk = false;
             }
         }
