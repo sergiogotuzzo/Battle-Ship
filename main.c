@@ -105,8 +105,10 @@ int main() {
         int x;
         char y;
 
-        printf("Enter X (1-10) and Y (A-J)\n");
-        scanf("%d %c", &x, &y);
+        do {
+            printf("Enter X (1-10) and Y (A-J)\n");
+            scanf("%d %c", &x, &y);
+        } while (x < 1 || x > 10 || y < 'A' || y > 'J');
 
         int cell = getCell(x, y);
 
