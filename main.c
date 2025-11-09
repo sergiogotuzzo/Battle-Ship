@@ -112,7 +112,10 @@ int main() {
 
         int cell = getCell(x, y);
 
-        if (cells[cell] == '*') {
+        if (knownCells[cell] != '*') {
+            printf("You already tried this cell!\n");
+            continue;
+        } else if (cells[cell] == '*') {
             knownCells[cell] = 'O';
 
             printf("Miss!\n");
