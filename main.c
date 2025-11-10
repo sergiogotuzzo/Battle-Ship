@@ -99,9 +99,10 @@ int main() {
 
     printGame(knownCells);
 
+    int maxAttempts = 40;
     int attempts = 0;
 
-    while (attempts < 40) {
+    while (attempts < maxAttempts) {
         int x;
         char y;
 
@@ -147,7 +148,7 @@ int main() {
         if (allShipPartsSunk) {
             printf("You won!\n");
             break;
-        } else if (attempts >= 40) {
+        } else if (attempts >= maxAttempts) {
             printf("You lose!\n");
             printGame(cells);
             break;
