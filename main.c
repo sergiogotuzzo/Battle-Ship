@@ -120,7 +120,7 @@ int main() {
 
             printf("Miss!\n");
         } else {
-            for (int i = 0; i < 3; i++) {
+            for (int i = 0; i < totalShips; i++) {
                 if (cells[cell] == ships[i].symbol) {
                     ships[i].hits++;
                 }
